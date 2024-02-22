@@ -1,0 +1,47 @@
+YOGA-CHATBOT
+We will integrate it with chatgpt using an API key so that the responses are given out properly and the workload is much lesser.
+
+Here is the general code for the chatbot
+
+// Import required modules
+const express = require('express');
+const axios = require('axios');
+
+// Create an Express app
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware to parse JSON requests
+app.use(express.json());
+
+// Define a route to handle incoming messages
+app.post('/chat', async (req, res) => {
+  try {
+    const userInput = req.body.message;
+
+    // Make a request to the OpenAI API
+    const response = await axios.post('https://api.openai.com/v1/completions', {
+      prompt: userInput,
+      max_tokens: 50, // Adjust as needed
+      temperature: 0.7, // Adjust as needed
+      n: 1 // Number of responses to generate
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}` // Use your API key
+      }
+    });
+
+    // Extract and send the response to the client
+    const botResponse = response.data.choices[0].text.trim();
+    res.json({ message: botResponse });
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+});
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
