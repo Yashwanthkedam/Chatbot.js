@@ -1,7 +1,3 @@
-YOGA-CHATBOT
-We will integrate it with chatgpt using an API key so that the responses are given out properly and the workload is much lesser.
-
-Here is the general code for the chatbot
 
 // Import required modules
 const express = require('express');
@@ -28,7 +24,7 @@ app.post('/chat', async (req, res) => {
     }, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}` // Use your API key
+        'Authorization': `Bearer ${process.env.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}`
       }
     });
 
